@@ -1,29 +1,30 @@
 import { useState } from "react";
 
 function TaskForm({ taskList, setTaskList }) {
-  const [newTask, setNewTask] = useState("");
+  const [newTask, setNewTask] = useState({
+    id: crypto.randomUUID(),
+    text: "",
+  });
 
   function handleSubmit(event) {
     event.preventDefault();
-    setTaskList([
-      {
-        id: crypto.randomUUID(),
-        text: newTask,
-      },
-      ...taskList,
-    ]);
-    setNewTask("");
+    setTaskList([newTask, ...taskList]);
+    setNewTask({
+      id: crypto.randomUUID(),
+      text: "",
+    });
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="new-task">New Task: </label>
       <input
         type="text"
         id="new-task"
-        value={newTask}
+        value={newTask.text}
         placeholder="Add Task"
-        onChange={(event) => setNewTask(event.target.value)}
+        onChange={(event) =>
+          setNewTask({ ...newTask, text: event.target.value })
+        }
       />
       <button>Add</button>
     </form>
